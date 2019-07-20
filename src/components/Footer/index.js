@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row,Col } from 'antd';
 import { connect } from 'react-redux'
-class Admin extends React.Component{
+class Footer extends React.Component{
  render(){
   return (
     <div>脚部内容栏目</div>
@@ -9,4 +9,4 @@ class Admin extends React.Component{
  }
 }
 
-export default connect()(Admin);
+export default connect()(Footer);

@@ -1,12 +1,15 @@
 import React from 'react';
 import { Row,Col } from 'antd';
 import { connect } from 'react-redux'
-class Admin extends React.Component{
+import './'
+class Head extends React.Component{
  render(){
   return (
-    <div>头部栏目栏目</div>
+    <div className='header'>
+      头部
+    </div>
   );
  }
 }
 
-export default connect()(Admin);
+export default connect()(Head);
