@@ -43,7 +43,7 @@ class NavLeft extends React.Component {
             }
           >
             <Menu.Item key="3">
-              <Link to="/order">待审核</Link>
+              <Link to="/audit">待审核</Link>
             </Menu.Item>
             <Menu.Item key="4">
               <Link to="/execute">正在执行</Link>

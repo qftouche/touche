@@ -10,4 +10,5 @@ export default (state = initstate,action)=>{
       console.log(action.value)
       return Object.assign({},state,{userInfo:action.value})
   }
+  return state
 }

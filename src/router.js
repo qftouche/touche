@@ -6,7 +6,7 @@ import Admin from './admin'
 import Home from './pages/home'
 import Reg from './pages/form/regist'
 import Login from './Login'
-
+import Audit from "./pages/order/index";
 // 导出路由页面
 
 export default class ERouter extends React.Component{
@@ -23,6 +23,7 @@ export default class ERouter extends React.Component{
               <Switch>
                 <Route path="/home" component={Home} />
                 <Route path="/form/reg" component={Reg} />
+                <Route path="/audit" component={Audit}></Route>
                 
               </Switch>
             </Admin>
