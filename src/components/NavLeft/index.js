@@ -42,8 +42,12 @@ class NavLeft extends React.Component {
               </span>
             }
           >
-            <Menu.Item key="3">待审核</Menu.Item>
-            <Menu.Item key="4">正在执行</Menu.Item>
+            <Menu.Item key="3">
+              <Link to="/order">待审核</Link>
+            </Menu.Item>
+            <Menu.Item key="4">
+              <Link to="/execute">正在执行</Link>
+            </Menu.Item>
             <Menu.Item key="5">已经结束</Menu.Item>
           </SubMenu>
 
