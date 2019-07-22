@@ -1,12 +1,59 @@
-import React from 'react';
-import { Row,Col, Divider } from 'antd';
-import { connect } from 'react-redux'
-class NavLeft extends React.Component{
- render(){
-  return (
-   <div>左边栏目</div>
-  );
- }
+import React from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import "./index.css";
+import { Menu } from "antd";
+
+class NavLeft extends React.Component {
+  state = {
+    current: 'login',
+  };
+
+  handleClick = e => {
+    console.log( e);
+    console.log( this.props )
+  };
+  render() {
+    const { SubMenu } = Menu;
+    return (  
+      
+      <div className="navcontent">
+        <a href="#">
+          <div className="navlogo">
+            <img src="./assets/logo-ant.svg" alt="logo" />
+            <h1>IMooc MS</h1>
+          </div>
+        </a>
+        <Menu 
+         theme="dark"
+         onClick={this.handleClick} 
+         selectedKeys={[this.state.current]}
+         >
+       
+           <Menu.Item key="1">首页</Menu.Item>
+         
+          <Menu.Item key="2">员工管理</Menu.Item>
+          
+          <SubMenu  
+            key="sub1"
+            title={
+              <span>
+                <span>订单管理</span>
+              </span>
+            }
+          >
+            <Menu.Item key="3">待审核</Menu.Item>
+            <Menu.Item key="4">正在执行</Menu.Item>
+            <Menu.Item key="5">已经结束</Menu.Item>
+          </SubMenu>
+
+          <Menu.Item key="6">财务</Menu.Item>
+          <Menu.Item key="7">权限设置</Menu.Item>
+
+        </Menu>
+      </div>
+    );
+  }
 }
 
 export default connect()(NavLeft);

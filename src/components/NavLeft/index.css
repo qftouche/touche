@@ -1,0 +1,23 @@
+.navcontent{
+    height: 100%;
+    width: 100%;
+ }
+ .navlogo{
+     height: 180px;
+     background-color: #002140;
+     line-height: 90px;
+     padding-left: 20px;
+ }
+ .navlogo h1{
+     color: #ffffff;
+     font-size: 20px;
+     display: inline-block;
+     vertical-align: middle;
+     margin: 0 0 0 10px;
+ }
+ .navlogo img{
+     vertical-align: middle;
+     border-style: none;
+     width: 30px;
+     height: 30px;
+ }
