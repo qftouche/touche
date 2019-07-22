@@ -10,6 +10,8 @@ export const userLogin = (value)=>{
       return item.username == value.username && item.password == value.password
     })
     if(index != -1){
+      let user = JSON.stringify(res[index])
+      localStorage.setItem('user',user)
       dispatch({
         type:contans.USER_LOGIN,
         value:res[index]

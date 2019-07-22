@@ -11,6 +11,7 @@ import Login from './Login'
 
 export default class ERouter extends React.Component{
   render(){
+    let user = localStorage.getItem('user');
     return (
     <HashRouter>
       <App>
@@ -19,13 +20,19 @@ export default class ERouter extends React.Component{
           <Route path='/login' component={Login}/>
           {/* 主页面路由 */}
           <Route path="/" render={()=>
-            <Admin>
-              <Switch>
-                <Route path="/home" component={Home} />
-                <Route path="/form/reg" component={Reg} />
-                
-              </Switch>
-            </Admin>
+            {
+              if(user){
+                return (<Admin>
+                  <Switch>
+                    <Route path="/home" component={Home} />
+                    <Route path="/form/reg" component={Reg} />
+                  
+                  </Switch>
+                </Admin>)
+              }else{
+                return <Redirect to="/login"/>
+              }
+            }
             } />
         </Switch>
       </App>

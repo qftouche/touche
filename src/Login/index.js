@@ -19,7 +19,6 @@ class Login extends React.Component {
       if (!err) {
         this.props.actLogin(values)
       }
-      console.log(this.state.userInfo)
     });
   };
 
@@ -27,7 +26,7 @@ class Login extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="wrap-login">
-        <h1 style={ {"color":"red"} }>{this.props.userInfo}saduga</h1>
+        <h1 style={ {"color":"red"} }>{this.props.userInfo ? this.props.userInfo.username : '用户名'}</h1>
         <div className="login-box">
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Form.Item>
@@ -92,10 +91,4 @@ const mapDispacthToProps = (dispatch)=>{
   }
 }
 
-export default connect(
-  (state)=>{
-    return {
-      userInfo:state.userInfo
-    }
-  }
-  ,mapDispacthToProps)(WrpaLogin);
+export default connect(mapStateToProps,mapDispacthToProps)(WrpaLogin);
