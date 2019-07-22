@@ -7,9 +7,9 @@ import './admin.scss'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import NavLeft from './components/NavLeft'
-
-
-
+import { HashRouter, Route, Switch, Redirect} from 'react-router-dom'
+import Audit from "./pages/order/index";
+import Execu from "./pages/order/execu";
 class Admin extends React.Component{
  render(){
   return (
@@ -18,7 +18,7 @@ class Admin extends React.Component{
                     <NavLeft/>
                 </Col>
                 <Col span={20} className="main">
-                <Header/>
+                  <Header/>
                     <Row className="content">
                         {this.props.children}
                     </Row>

@@ -1,0 +1,26 @@
+.order_page{
+    
+    width: 700px;
+    border-radius: 14px;
+    background: #ffffff;
+    .list_cont{
+        padding: 20px;
+    }
+    h1{
+        font-size: 20px;
+        color: #333333;
+        margin-left: 10px;
+    }
+    p{
+        text-align: center;
+        color: red;
+        padding-top: 10px;
+        border-top: 1px solid #cccccc;
+        font-size: 16px;
+    }
+    .subcommit{
+      margin-top: 15px 0;
+      display: flex;
+      justify-content: space-around;
+    }
+}
