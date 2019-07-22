@@ -1,12 +1,12 @@
 import React from 'react';
 import Admin from './admin';
-import './App.less'
-import './admin.less'
+import './App.scss'
+import './admin.scss'
 
-function App() {
+function App(props) {
   return (
     <div >
-      <Admin />
+      {props.children}
     </div>
   );
 }

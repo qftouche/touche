@@ -2,8 +2,8 @@ import React from 'react';
 import { Row,Col } from 'antd';
 import 'antd/dist/antd.css'
 import { connect } from 'react-redux'
-import './style/common.less'
-import './admin.less'
+import './style/common.scss'
+import './admin.scss'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import NavLeft from './components/NavLeft'
