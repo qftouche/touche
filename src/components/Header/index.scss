@@ -1,21 +1,28 @@
-@import './../../style/default.less';
 .header{
-    background-color: @colorM;
+    background-color: #ffffff;
     .header-top{
         height: 60px;
         line-height: 60px;
         padding: 0 20px;
         text-align: right;
-        .logo{
-            line-height: 60px;
-            text-align: left;
-            font-size: 18px;
+        // .logo{
+        //     line-height: 60px;
+        //     text-align: left;
+        //     font-size: 18px;
+        //     img{
+        //         height: 40px;
+        //         vertical-align: middle;
+        //     }
+        //     span{
+        //         margin-left: 5px;
+        //     }
+        // }
+        .logo1{
             img{
-                height: 40px;
-                vertical-align: middle;
-            }
-            span{
-                margin-left: 5px;
+                height: 30px;
+                width: 30px;
+                border-radius:50%;
+                margin-right: 20px;
             }
         }
         a{
@@ -29,13 +36,13 @@
         border-top: 1px solid #f9c700;
         .breadcrumb-title{
             text-align: center;
-            font-size: @fontC;
+            font-size: 18px;
             &:after{
                 position: absolute;
                 content: '';
                 left:73px;
                 top:39px;
-                border-top: 9px solid @colorM;
+                border-top: 9px solid #ffffff;
                 border-left: 12px solid transparent;
                 border-right: 12px solid transparent;
             }
@@ -62,6 +69,6 @@
 .simple-page{
   .header-top{
     background:#1890ff;
-    color:@colorM;
+    color:#ffffff;
   }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import "./index.css";
+import "./index.scss";
 import { Menu } from "antd";
 
 class NavLeft extends React.Component {

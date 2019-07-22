@@ -2,6 +2,8 @@ import React from 'react';
 import { Row,Col } from 'antd';
 import 'antd/dist/antd.css'
 import { connect } from 'react-redux'
+import './style/common.scss'
+import './admin.scss'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import NavLeft from './components/NavLeft'
@@ -18,8 +20,7 @@ class Admin extends React.Component{
                 <Col span={20} className="main">
                   <Header/>
                     <Row className="content">
-                        <Route path="/order" component={ Audit }/>
-                        <Route path="/execute" component={ Execu }/>
+                        {this.props.children}
                     </Row>
                     <Footer />
                 </Col>

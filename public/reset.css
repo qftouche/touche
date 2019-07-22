@@ -52,17 +52,7 @@ table {
   white-space: nowrap;
 }
 /* ========华丽的分割线============== */
-.nav-left{
-  background-color: #001529;
-  color: #ffffff;
-  height: calc(100vh);
-}
-.main{
-  height: calc(100vh);
-  background-color: #f1f3f5;
-  overflow: auto;
-}
-.content{
-  position: relative;
-  padding: 20px;
+#root{
+  height: 100%;
+  width: 100%;
 }
