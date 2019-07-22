@@ -1,11 +1,9 @@
 import React from 'react';
-import Admin from './admin';
 import './App.scss'
-import './admin.scss'
 
 function App(props) {
   return (
-    <div >
+    <div className="wrap-app">
       {props.children}
     </div>
   );

@@ -39,6 +39,7 @@
   "author": "ouwen <111@qq.com>",
   "license": "MIT",
   "devDependencies": {
+    "axios": "^0.19.0",
     "node": "^12.6.0",
     "node-sass": "^4.12.0",
     "sass": "^1.22.7"
