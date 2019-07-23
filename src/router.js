@@ -11,6 +11,7 @@ import Audit from "./pages/order/index";
 
 export default class ERouter extends React.Component{
   render(){
+    let user = localStorage.getItem('user');
     return (
     <HashRouter>
       <App>
@@ -19,14 +20,19 @@ export default class ERouter extends React.Component{
           <Route path='/login' component={Login}/>
           {/* 主页面路由 */}
           <Route path="/" render={()=>
-            <Admin>
-              <Switch>
-                <Route path="/home" component={Home} />
-                <Route path="/form/reg" component={Reg} />
-                <Route path="/audit" component={Audit}></Route>
-                
-              </Switch>
-            </Admin>
+            {
+              if(user){
+                return (<Admin>
+                  <Switch>
+                    <Route path="/home" component={Home} />
+                    <Route path="/form/reg" component={Reg} />
+                  
+                  </Switch>
+                </Admin>)
+              }else{
+                return <Redirect to="/login"/>
+              }
+            }
             } />
         </Switch>
       </App>
