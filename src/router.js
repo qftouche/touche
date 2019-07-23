@@ -3,10 +3,13 @@ import { HashRouter, Route, Switch, Redirect} from 'react-router-dom'
 // 路由页面引入
 import App from './App'
 import Admin from './admin'
-import Home from './pages/home'
+import Home from './pages/home/index'
 import Reg from './pages/form/regist'
 import Login from './Login'
 import Audit from "./pages/order/index";
+import EXecu from "./pages/execu/index";
+import Finish from "./pages/finish/index";
+import SuperMo from "./pages/supremo/index";
 // 导出路由页面
 
 export default class ERouter extends React.Component{
@@ -22,11 +25,15 @@ export default class ERouter extends React.Component{
           <Route path="/" render={()=>
             {
               if(user){
-                return (<Admin>
+                return (
+                <Admin>
                   <Switch>
                     <Route path="/home" component={Home} />
                     <Route path="/form/reg" component={Reg} />
-                  
+                    <Route path="/audit"   component={ Audit } />
+                    <Route path="/execute" component={EXecu} />
+                    <Route path='/finish' component={ Finish }/>
+                    <Route path="/supermo" component={ SuperMo } />
                   </Switch>
                 </Admin>)
               }else{
