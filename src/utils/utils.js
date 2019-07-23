@@ -13,7 +13,7 @@ export default {
         this.parseZero(date.getSeconds());
     },
     parseZero(num){
-        return num<10?"0"+num:num
+        return num<10?"0"+num:num;
     },
     pagination(data,callback){
         return {
