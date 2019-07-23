@@ -31,8 +31,8 @@ class NavLeft extends React.Component {
          >
        
            <Menu.Item key="1">
-             <Link to="/home">首页</Link>
-            </Menu.Item>
+           <Link to="/home">首页</Link>
+           </Menu.Item>
          
           <Menu.Item key="2">员工管理</Menu.Item>
           
@@ -54,12 +54,10 @@ class NavLeft extends React.Component {
               <Link to="/finish">结束订单</Link>
             </Menu.Item>
           </SubMenu>
-
-          <Menu.Item key="6">财务</Menu.Item>
-          <Menu.Item key="7">
-            <Link to="/supermo">权限设置</Link>
+          <Menu.Item key="6">
+            <Link to="/finance">财务</Link>
           </Menu.Item>
-
+          <Menu.Item key="7">权限设置</Menu.Item>
         </Menu>
       </div>
     );

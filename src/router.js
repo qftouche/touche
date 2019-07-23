@@ -1,5 +1,7 @@
 import React from 'react';
-import { HashRouter, Route, Switch, Redirect} from 'react-router-dom'
+import { HashRouter, Route, Switch, Redirect} from 'react-router-dom';
+//仓库引入
+import store from './store'
 // 路由页面引入
 import App from './App'
 import Admin from './admin'
@@ -10,11 +12,12 @@ import Audit from "./pages/order/index";
 import EXecu from "./pages/execu/index";
 import Finish from "./pages/finish/index";
 import SuperMo from "./pages/supremo/index";
+import Finance from './pages/finance'
 // 导出路由页面
 
 export default class ERouter extends React.Component{
   render(){
-    let user = localStorage.getItem('user');
+    let user = (store.getState('userInfo'))
     return (
     <HashRouter>
       <App>
