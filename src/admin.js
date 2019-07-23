@@ -7,9 +7,6 @@ import './admin.scss'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import NavLeft from './components/NavLeft'
-import { HashRouter, Route, Switch, Redirect} from 'react-router-dom'
-import Audit from "./pages/order/index";
-import Execu from "./pages/order/execu";
 class Admin extends React.Component{
  render(){
   return (

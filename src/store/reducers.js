@@ -7,7 +7,6 @@ const initstate={
 export default (state = initstate,action)=>{
   switch(action.type){
     case 'user-login':
-      console.log(action.value)
       return Object.assign({},state,{userInfo:action.value})
   }
   return state
