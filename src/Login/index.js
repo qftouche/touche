@@ -18,7 +18,7 @@ class Login extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.actLogin(values)
+        this.props.actLogin(values,this.props);
       }
     });
   };
@@ -86,8 +86,8 @@ const mapStateToProps = (state)=>{
 // 把dispacth添加到props
 const mapDispacthToProps = (dispatch)=>{
   return {
-    actLogin(value){
-      dispatch( userLogin(value) )
+    actLogin(value,props){
+      dispatch( userLogin(value,props) )
     }
   }
 }
