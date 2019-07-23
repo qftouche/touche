@@ -11,7 +11,7 @@ class NavLeft extends React.Component {
 
   handleClick = e => {
     console.log( e);
-    console.log( this.props )
+    
   };
   render() {
     const { SubMenu } = Menu;
@@ -50,14 +50,14 @@ class NavLeft extends React.Component {
             <Menu.Item key="4">
               <Link to="/execute">正在执行</Link>
             </Menu.Item>
-            <Menu.Item key="5">已经结束</Menu.Item>
+            <Menu.Item key="5">
+              <Link to="/finish">结束订单</Link>
+            </Menu.Item>
           </SubMenu>
-
           <Menu.Item key="6">
             <Link to="/finance">财务</Link>
           </Menu.Item>
           <Menu.Item key="7">权限设置</Menu.Item>
-
         </Menu>
       </div>
     );

@@ -7,6 +7,7 @@ import './admin.scss'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import NavLeft from './components/NavLeft'
+
 class Admin extends React.Component{
  render(){
   return (
