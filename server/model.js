@@ -11,7 +11,7 @@ const model = {
     'type':{type:String,'require':true},
     'avater':{type:String,'require':true},
     'desc':{type:String,'require':true},
-    'roel':{type:String,'require':true}
+    'role':{type:String,'require':true}
   }
 }
 
