@@ -3,7 +3,6 @@ import './index.scss';
 import { Form, Icon, Input, Button, Checkbox } from "antd";
 import {connect} from 'react-redux';
 import store from './../store';
-import {userLogin} from './../store/actionCreates'
 import router from 'react-router-dom'
 
 class Login extends React.Component {
@@ -87,7 +86,7 @@ const mapStateToProps = (state)=>{
 const mapDispacthToProps = (dispatch)=>{
   return {
     actLogin(value,props){
-      dispatch( userLogin(value,props) )
+      dispatch()
     }
   }
 }

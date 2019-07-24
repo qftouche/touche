@@ -178,7 +178,7 @@ class User extends React.Component {
           title={this.state.title}
           visible={this.state.isVisible}
           onOk={()=>{
-            this.handleSubmit(this.props)
+            this.handleSubmit()
           }}
           width={800}
           onCancel={() => {
@@ -197,18 +197,21 @@ class User extends React.Component {
       </div>
     )
   }
-
- 
-  handleSubmit=(props)=>{
-      console.log(props)
-      // validateFields((errors, values) => {
-      //   console.log( values )
-      // });
+  handleSubmit=()=>{
+      this.userForm.props.form.validateFields((errors, values) => {
+         if(!errors){
+          console.log(values)
+         }
+      })
+      
   }
 }
 
 export default connect()(User)
 class UserForm extends React.Component {
+  componentDidMount(){
+   
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
