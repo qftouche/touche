@@ -1,0 +1,1 @@
+export const FINANCY_DATA='financy-data';
