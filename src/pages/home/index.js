@@ -22,9 +22,7 @@ class Home extends React.Component {
             {imglist.map((item, index) => {
               return (
                 <div key={index}>
-                  <h3>
                     <img src={item} alt="来呀快活呀" />
-                  </h3>
                 </div>
               );  
             })}
