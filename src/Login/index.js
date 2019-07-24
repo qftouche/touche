@@ -3,7 +3,7 @@ import './index.scss';
 import { Form, Icon, Input, Button, Checkbox } from "antd";
 import {connect} from 'react-redux';
 import store from './../store';
-import {userLogin} from './../store/actionCreates'
+import {userLogin} from './../store/modules/login/actionCreates'
 import router from 'react-router-dom'
 
 class Login extends React.Component {

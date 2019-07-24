@@ -1,5 +1,6 @@
 import * as contans from './contans';
-import ajax from './../ajax'
+import ajax from './../../../ajax';
+
 
 // 登录问题，
 export const userLogin = (value,props)=>{
