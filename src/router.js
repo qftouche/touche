@@ -12,7 +12,8 @@ import Audit from "./pages/order/index";
 import EXecu from "./pages/execu/index";
 import Finish from "./pages/finish/index";
 import SuperMo from "./pages/supremo/index";
-import Finance from './pages/finance'
+import Finance from './pages/finance';
+import User from "./pages/user/index";
 // 导出路由页面
 
 export default class ERouter extends React.Component{
@@ -36,7 +37,9 @@ export default class ERouter extends React.Component{
                     <Route path="/audit"   component={ Audit } />
                     <Route path="/execute" component={EXecu} />
                     <Route path='/finish' component={ Finish }/>
-                    <Route path="/supermo" component={ SuperMo } />
+                    <Route path="/finance" component={ Finance } />
+                    <Route path="/supermo" component={ SuperMo } /> 
+                    <Route path="/user" component={ User } />
                   </Switch>
                 </Admin>)
               }else{
