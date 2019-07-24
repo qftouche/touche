@@ -1,6 +1,5 @@
 .order_page{
     
-    width: 700px;
     border-radius: 14px;
     background: #ffffff;
     margin: 0 auto;
@@ -23,5 +22,8 @@
       margin-top: 15px 0;
       display: flex;
       justify-content: space-around;
+    }
+    .addorder{
+        margin-left: 30px;
     }
 }
