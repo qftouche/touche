@@ -6,5 +6,12 @@
         "username":"admin",
         "password":"123"
       }
+    ],
+    "banner":[
+      {"id":1,"path":"https:baibu.com"}
+    ],
+    "staff":[
+      
     ]
+      
   }
