@@ -34,6 +34,7 @@ export default class ERouter extends React.Component{
                   <Switch>
                     <Route path="/home" component={Home} />
                     <Route path="/form/reg" component={Reg} />
+                    <Route path='/finance' component={Finance}/>
                     <Route path="/audit"   component={ Audit } />
                     <Route path="/execute" component={EXecu} />
                     <Route path='/finish' component={ Finish }/>
