@@ -1,33 +1,42 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Form, Select, Button, DatePicker, Table } from "antd";
+import actions from "../../store/modules/execu/actions";
+import { Form, Select, Button, DatePicker, Table,Modal } from "antd";
 import "./execu.scss";
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 const columns = [
   {
-    title: "姓名",
-    dataIndex: "name"
+    title: "姓名/商户名称",
+    dataIndex: "commercial"
   },
   {
-    title: "age",
-    dataIndex: "age"
+    title: "订单号",
+    dataIndex: "number"
   },
   {
-    title: "Address",
-    dataIndex: "address"
+    title: "开始时间",
+    dataIndex: "startTime"
+  },
+  {
+    title: "结束时间",
+    dataIndex: "endTime"
+  },
+  {
+    title: "币种",
+    dataIndex: "currency"
+  },
+  {
+    title: "订单金额",
+    dataIndex: "money"
+  },
+  {
+    title: "订单描述",
+    dataIndex: "desc",
   }
 ];
-const data = [];
-for (let i = 0; i < 10; i++) {
-  data.push({
-    key: i,
-    name: `张${i}`,
-    age: 32,
-    address: `London, Park Lane no. ${i}`
-  });
-}
+
 class EXecu extends React.Component {
   state = {
     cityList: [
@@ -36,39 +45,47 @@ class EXecu extends React.Component {
       { py: "guangzhou", city: "广州" },
       { py: "shenzheng", city: "深圳" }
     ],
-    selectedRowKeys: [], // Check here to configure the default column
-    loading: false
+    selectedRowKeys: [], //当前选中的table框的下标
+    loading: false,       
+    checkselectAll:[],   //被选中的数据
+    id:[]                //被选中的当前的id
   };
-  start = () => {
+  start = (type) => {
+    if(type==='danger'){
+      console.log(1)
+      
+      console.log( this.state.id )
+    } else if( type === 'primary' ) {
+     setTimeout(()=>{ this.info()},500)
+    }
     this.setState({ loading: true });
-    // ajax request after empty completing
-    setTimeout(() => {
-      this.setState({
-        selectedRowKeys: [],
-        loading: false
-      });
-    }, 1000);
+    this.setState({
+      selectedRowKeys: [],
+      loading: false
+    });
   };
-  onSelectChange = selectedRowKeys => {
-    console.log("selectedRowKeys changed: ", selectedRowKeys);
-    this.setState({ selectedRowKeys });
+  onSelectChange = (selectedRowKeys,selectrows) => {
+   
+   let a= selectrows.map(element => {
+       return element._id
+    });
+    console.log ( a)
+    this.setState({ selectedRowKeys,checkselectAll:selectrows });
   };
   render() {
     let { getFieldDecorator } = this.props.form;
     const { loading, selectedRowKeys } = this.state;
     const rowSelection = {
-      selectedRowKeys,  
-      onChange: this.onSelectChange,
+      selectedRowKeys,
+      onChange: this.onSelectChange
     };
-    const hasSelected = selectedRowKeys.length > 0;
+    const hasSelected = selectedRowKeys.length > 0;  // 判断现在是否有点击选择框
     return (
       <div className="execu_page">
         <div className="execu_select_page">
           <Form layout="inline">
-            <Form.Item label="城市选择">
-              {getFieldDecorator("select", {
-                rules: [{ require: true, message: "请选择您要搜索的城市" }]
-              })(
+            <Form.Item label="城市选择">  
+              {getFieldDecorator("select")(
                 <Select style={{ width: "80px" }}>
                   <Option value="all">全部城市</Option>
                   {this.state.cityList.map((item, index) => {
@@ -95,39 +112,44 @@ class EXecu extends React.Component {
                 </Select>
               )}
             </Form.Item>
-             <div className="button_top">
-               <Button type="primary">查询</Button>
-               <Button type="danger">重置</Button>
-             </div>
+            <div className="button_top">
+              <Button type="primary">查询</Button>
+              <Button type="danger">重置</Button>
+            </div>
           </Form>
         </div>
         <div className="execu_table_page">
           <div className="execu_table_head">
-            <Button type="primary">订单详情</Button>
-            <Button type="danger">结束订单</Button>
+            <Button
+              type="primary"
+              onClick={()=>{ this.start('primary') }}
+              disabled={!hasSelected}
+              loading={loading}
+            >
+              订单详情
+            </Button>
+            <Button
+              type="danger"
+              onClick={()=>{ this.start('danger') }}
+              disabled={!hasSelected}
+              loading={loading}
+            >
+              结束订单
+            </Button>
           </div>
           <div className="execu_table_bot">
             <div>
-              <div style={{ marginBottom: 16 }}>
-                <Button
-                  type="primary"
-                  onClick={this.start}
-                  disabled={!hasSelected}
-                  loading={loading}
-                >
-                  Reload
-                </Button>
+              <div style={{ marginBottom: 16, marginLeft: 16 }}>
                 <span style={{ marginLeft: 8 }}>
-                  {hasSelected
-                    ? `选择了 ${selectedRowKeys.length} 条`
-                    : ""}
+                  {hasSelected ? `选择了 ${selectedRowKeys.length} 条` : 0}
                 </span>
               </div>
               <Table
+                rowKey={record => record.uid}
                 bordered={true}
                 rowSelection={rowSelection}
                 columns={columns}
-                dataSource={data}
+                dataSource={this.props.orderlist}
               />
             </div>
           </div>
@@ -135,12 +157,46 @@ class EXecu extends React.Component {
       </div>
     );
   }
+
+  componentDidMount() {
+    this.props.initorder();
+  }
+
+   info=()=>{ // 弹出显示框 显示当前选中信息
+    
+    Modal.info({
+      title: '当前选中的订单信息是',
+      width:'100%',
+      content: (
+        <div>
+           <Table
+              rowKey={record => record.uid}
+              bordered={true}
+              columns={columns}
+             dataSource={this.state.checkselectAll}
+            />
+        </div>
+      ),
+     
+    });
+  }
 }
 
 EXecu = Form.create(null)(EXecu);
 
-export default connect(state => {
-  return {
-    cityList: state.cityList
-  };
-})(EXecu);
+export default connect(
+  state => {
+    return {
+      cityList: state.cityList,
+      orderlist: state.neworder.orderlist
+    };
+  },
+  (dispatch, props) => {
+    return {
+      initorder: () => {
+        dispatch(actions.initorder());
+      }
+    };
+  }
+)(EXecu);
+

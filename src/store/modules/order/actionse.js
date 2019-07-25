@@ -6,9 +6,7 @@ const actions = {
         .post("http://10.36.140.222:9090/oders/add", JSON.stringify({...values,pass:0}))
         .then(res => {
           if(res.data.code===200){
-            // message('添加成功') 提示信息 添加成功
             let values=res.config.data;
-            console.log( values )
             values=JSON.parse(values)
             dispatch({
                 type:'addorder',
@@ -16,22 +14,46 @@ const actions = {
             })
           }
         });
-    };
+    };  
   },
   getorderlist:()=>{
       return (dispatch,getstate)=>{
-          axios.get('http://10.36.140.222:9090/oders/list')
+          axios.get('http://10.36.140.222:9090/oders/list?pass=0')
           .then(res=>{
-             
               if(res.status===200){
                 let data = res.data;
-                console.log(data)
                 dispatch({
                     type:'initorderlist',
                     data
                 })
               }
           })
+      }
+  },
+  passorder:(id,values)=>{
+   let data = JSON.stringify({_id:id,content:{pass:1,...values}});
+    return (dispatch,getstate)=>{
+       axios.post(`http://10.36.140.222:9090/oders/updata`,
+         data 
+       ).then(res=>{
+           if(res.data.code==200){
+              
+           }
+       }) 
+    }   
+  },
+  Delectone:(id)=>{
+      return (dispatch,getstate)=>{
+         axios.get(`http://10.36.140.222:9090/oders/del?_id=${id}`)
+         .then(res=>{
+             if(res.data.code===200){
+               // 删除成功
+               dispatch({
+                   type:'delectone',
+                   id
+               })  
+             }
+         }) 
       }
   }
 };
