@@ -32,10 +32,9 @@ Router.post('/add',function(req,res){
 })
 // 订单的修改
 Router.post('/updata',function(req,res){
-  let number = JSON.parse( Object.keys(req.body)).number
+  let condition = JSON.parse( Object.keys(req.body))._id
   let content = JSON.parse( Object.keys(req.body)).content
-  // let content = 
-  oderRouter.update({number},{ '$set':content},function(err,doc){
+  oderRouter.updateOne({_id:condition},{ '$set':content},function(err,doc){
     if(!err){
       let msg = {
         code:200,
