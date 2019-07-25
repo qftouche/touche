@@ -53,7 +53,7 @@ const columns = [
     render: () => {
       return (
         <div>
-          <Button>通过审核</Button>
+          <Button onClick={()=>{  }}>通过审核</Button>
           <Button>修改订单</Button>
           <Button type="danger">删除订单</Button>
         </div>
@@ -66,9 +66,55 @@ const columns = [
 class Audit extends React.Component {
   state = {
     loading: false,
-    visible: false
+    visible: false,
+    columns : [
+      {
+        title: "姓名/商户名称",
+        dataIndex: "commercial"
+      },
+      {
+        title: "订单号",
+        dataIndex: "number"
+      },
+      {
+        title: "开始时间",
+        dataIndex: "startTime"
+      },
+      {
+        title: "结束时间",
+        dataIndex: "endTime"
+      },
+      {
+        title: "币种",
+        dataIndex: "currency"
+      },
+      {
+        title: "订单金额",
+        dataIndex: "money"
+      },
+      {
+        title: "订单描述",
+        dataIndex: "desc"
+      },
+      {
+        title: "操作",
+        render: ( text ) => {
+          return (
+            <div>
+              <Button onClick={()=>{ this.passorder(text) }}>通过审核</Button>
+              <Button>修改订单</Button>
+              <Button type="danger">删除订单</Button>
+            </div>
+          );
+        }
+      }
+    ]
   };
- componentDidMount(){ 
+  passorder=(text)=>{
+    let id=text._id;
+   console.log(id)
+  }
+ componentDidMount(){ // 初始化仓库的数据
    this.props.getinitorder()
  }
 
@@ -93,7 +139,7 @@ class Audit extends React.Component {
           <UserForm wrappedComponentRef={(form) => this.UserForm = form} />
         </Modal>
         <div className="list_cont">
-          <Table bordered={true} columns={columns} dataSource={this.props.data} rowKey={1}/>
+          <Table bordered={true} columns={this.state.columns} dataSource={this.props.data} rowKey={1}/>
         </div>
       </div>
     );

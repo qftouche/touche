@@ -3,12 +3,12 @@ const actions = {
   addorder: values => {
     return (dispatch, getstate) => {
       axios
-        .post("http://10.36.140.222:9090/oders/add", JSON.stringify(values))
+        .post("http://10.36.140.222:9090/oders/add", JSON.stringify({...values,pass:0}))
         .then(res => {
           if(res.data.code===200){
             // message('添加成功') 提示信息 添加成功
-        
             let values=res.config.data;
+            console.log( values )
             values=JSON.parse(values)
             dispatch({
                 type:'addorder',
@@ -25,7 +25,7 @@ const actions = {
              
               if(res.status===200){
                 let data = res.data;
-                console.log( data )
+                console.log(data)
                 dispatch({
                     type:'initorderlist',
                     data
