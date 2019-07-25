@@ -29,6 +29,12 @@ const models = {
     "month":{type:String,"require":true},//月份
     "income":{type:Number,"require":true},//收入
     "expenditure":{type:Number,"require":true},//支出
+  },
+  "employee":{
+    "username":{type:String,"require":true},
+    "password":{type:String,"require":true},
+    "post":{type:String,"require":true},
+    "jurisdiction":{type:Number,"require":true}//权限，1-n
   }
 }
 

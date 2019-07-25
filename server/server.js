@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser')
 const userRouter = require('./user')
 const financyRouter = require('./financy')
 const oderRouter = require('./oder')
+const loginRouter = require('./login')
 
 // 新建app
 const app =express()
@@ -30,6 +31,7 @@ app.all('*', function(req, res, next) {
 app.use('/oders',oderRouter);
 app.use('/financy',financyRouter)
 app.use('/user',userRouter)
+app.use('/login',loginRouter)
 
 app.listen(9090,function(){
   console.log('Node app start at port 9090')
