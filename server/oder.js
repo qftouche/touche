@@ -5,7 +5,8 @@ const model = require('./model')
 const oderRouter = model.getModel('oders')
 // 订单数据请求=====================完成
 Router.get('/list',function(req,res){
-  let condition = req.body
+  let condition = req.query
+  console.log(condition)
   oderRouter.find(condition,function(err,doc){
     return res.json(doc)
   })
