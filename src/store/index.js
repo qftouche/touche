@@ -4,11 +4,12 @@ import login from './modules/login/reducer';
 import order  from "./modules/order/renders";
 import financy from './modules/financy/reducer';
 import regist from './modules/regist/reducer';
+import neworder from "./modules/execu/renders";
 
 const composeEnxxx = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // 创建store实例
 const store = createStore(
-  combineReducers({login,financy,order,regist}),
+  combineReducers({login,financy,order,regist,neworder}),
   composeEnxxx(applyMiddleware(thunk))
 )
 // 4,将store实例暴露出去
