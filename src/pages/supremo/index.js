@@ -1,166 +1,280 @@
 import React from "react";
-import { Button, Table, Modal, Form, Input, Icon ,Select } from "antd";
+import Highlighter from "react-highlight-words";
+import { userRegist,userList } from "./../../store/modules/regist/actionCreates";
+import store from "./../../store";
+import {
+  Button,
+  Table,
+  Modal,
+  Form,
+  Input,
+  Icon,
+  SelectCheckbox,
+  Select,
+  Checkbox,
+  Row,
+  Col
+} from "antd";
 import "./supermo.scss";
-const { Option } = Select
-const columns = [
-  {
-    title: "角色ID",
-    dataIndex: "name"
-  },
-  {
-    title: "角色名称",
-    dataIndex: "age"
-  },
-  {
-    title: "创建时间",
-    dataIndex: "address"
-  },
-  {
-    title: "停用状态",
-    dataIndex: "address"
-  },
-  {
-    title: "授权时间",
-    dataIndex: "address"
-  },
-  {
-    title: "授权人",
-    dataIndex: "address"
-  }
-];
+import { connect } from "react-redux";
 
-const data = [];
-for (let i = 0; i < 10; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    age: 32,
-    address: `London, Park Lane no. ${i}`
-  });
-}
+// 列表参数
+// const data = [
+//   {
+//     key: '1',
+//     name: '冯家瑞',
+//     department: "总经理",
+//     number: '002',
+//   }
+// ];
+const { Option } = Select;
+
 class SUperMo extends React.Component {
   state = {
     selectedRowKeys: [],
-    visible: false
+    visible: false,
+    searchText: "",
+    data: []
   };
 
-  onSelectChange = selectedRowKeys => {
-    console.log("selectedRowKeys changed: ", selectedRowKeys);
-    this.setState({ selectedRowKeys });
-  };
+
+  componentDidMount(){
+    this.props.getData()
+  }
   //   创建角色点击回调
   createrole = () => {
     this.setState({
       visible: true
     });
   };
-  handleOk = () => {
+  // 提交数据
+  handleOk = e => {
     this.setState({
       visible: false
     });
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        this.props.Regist(values);
+      }
+    });
+  };
+  // 列表的内容====================================================
+  getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters
+    }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+          style={{ width: 188, marginBottom: 8, display: "block" }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm)}
+          icon="search"
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button
+          onClick={() => this.handleReset(clearFilters)}
+          size="small"
+          style={{ width: 90 }}
+        >
+          Reset
+        </Button>
+      </div>
+    ),
+    filterIcon: filtered => (
+      <Icon type="search" style={{ color: filtered ? "#1890ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        .toString()
+        .toLowerCase()
+        .includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select());
+      }
+    },
+    render: text => (
+      <Highlighter
+        highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+        searchWords={[this.state.searchText]}
+        autoEscape
+        textToHighlight={text.toString()}
+      />
+    )
+  });
+
+  handleSearch = (selectedKeys, confirm) => {
+    confirm();
+    this.setState({ searchText: selectedKeys[0] });
   };
 
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({ searchText: "" });
+  };
+
+  // 列表内容结束
+  // department: 32,
+  // post: 'New York No. 1 Lake Park',
+  // 渲染内容
   render() {
-    const { selectedRowKeys } = this.state;
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
-      hideDefaultSelections: true,
-      selections: [
-        {
-          key: "all-data",
-          text: "Select All Data",
-          onSelect: () => {
-            this.setState({
-              selectedRowKeys: [...Array(46).keys()] // 0...45
-            });
-          }
-        },
-        {
-          key: "odd",
-          text: "Select Odd Row",
-          onSelect: changableRowKeys => {
-            let newSelectedRowKeys = [];
-            newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-              if (index % 2 !== 0) {
-                return false;
-              }
-              return true;
-            });
-            this.setState({ selectedRowKeys: newSelectedRowKeys });
-          }
-        },
-        {
-          key: "even",
-          text: "Select Even Row",
-          onSelect: changableRowKeys => {
-            let newSelectedRowKeys = [];
-            newSelectedRowKeys = changableRowKeys.filter((key, index) => {
-              if (index % 2 !== 0) {
-                return true;
-              }
-              return false;
-            });
-            this.setState({ selectedRowKeys: newSelectedRowKeys });
-          }
-        }
-      ]
-    };
+    const columns = [
+      {
+        title: "姓名",
+        dataIndex: "name",
+        key: "name",
+        width: "30%",
+        ...this.getColumnSearchProps("name")
+      },
+      {
+        title: "部门",
+        dataIndex: "department",
+        key: "department",
+        width: "20%",
+        ...this.getColumnSearchProps("department")
+      },
+      {
+        title: "工号",
+        dataIndex: "number",
+        key: "number",
+        ...this.getColumnSearchProps("number")
+      }
+    ];
     // form
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="supermo_page">
         <div className="role">
           <Button onClick={this.createrole}>创建角色</Button>
-          <Button >设置权限</Button>
-          <Button>用户授权</Button>
         </div>
-        <Table
-          bordered //边框
-          rowSelection={rowSelection}
-          columns={columns}
-          dataSource={data} // 数据源
-        />
         <Modal
           title="创建角色"
           visible={this.state.visible}
           onOk={this.handleOk}
-          onCancel={()=>{this.setState({ visible:false })}}
+          onCancel={() => {
+            this.setState({ visible: false });
+          }}
         >
           <Form>
-            <Form.Item label="角色名称" labelCol={{span:6}} wrapperCol={{span: 16}} >
+            {/* 用户名 */}
+            <Form.Item
+              label="职员账户"
+              labelCol={{ span: 6 }}
+              wrapperCol={{ span: 16 }}
+            >
               {getFieldDecorator("username", {
                 rules: [{ required: true, message: "请输入要创建的用户名" }],
-                initialValue:'张三丰'
-              },)(
-                <Input
-                  prefix={
-                    <Icon type="user" />
-                  }
-                  placeholder="姓名"
-                />
-              )}
+                initialValue: "张三丰"
+              })(<Input prefix={<Icon type="user" />} placeholder="姓名" />)}
             </Form.Item>
-
-            <Form.Item label="状态"  labelCol={{span:6}} wrapperCol={{span: 16}}>
-              {getFieldDecorator("role", {
-                initialValue:"开启"
+            {/* 密码*/}
+            <Form.Item
+              label="账户密码"
+              labelCol={{ span: 6 }}
+              wrapperCol={{ span: 16 }}
+            >
+              {getFieldDecorator("password", {
+                rules: [
+                  {
+                    required: true,
+                    message: "请输入账户的密码"
+                  },
+                  {
+                    validator: this.validateToNextPassword
+                  }
+                ]
+              })(<Input.Password />)}
+            </Form.Item>
+            {/* 密码结束 */}
+            {/* 部门选择 */}
+            <Form.Item 
+            label="部门"
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 16 }}
+            >
+              {getFieldDecorator("post", {
+                rules: [
+                  { required: true, message: "Please select your gender!" }
+                ]
               })(
                 <Select
-                  style={{ width: 150 }}
+                  placeholder="请选择员工所属部门"
+                  onChange={this.handleSelectChange}
                 >
-                  <Option value="1">开启</Option>
-                  <Option value="2">关闭</Option>
-                 
+                  <Option value="财务部">财务</Option>
+                  <Option value="人力资源部">人力</Option>
+                  <Option value="经理 ">经理</Option>
+                  <Option value="客户服务部">客服</Option>
                 </Select>
               )}
             </Form.Item>
+            {/* 部门选择结束 */}
+            {/* 权限选择 */}
+            <Form.Item label="管理权限">
+              {getFieldDecorator("jurisdiction", {
+                initialValue: "0"
+              })(
+                <Checkbox.Group style={{ width: "100%" }}>
+                  <Row>
+                    <Col span={8}>
+                      <Checkbox value="0">boss</Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="1">财务</Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="2">人力</Checkbox>
+                    </Col>
+                    <Col span={8}>
+                      <Checkbox value="3">客服</Checkbox>
+                    </Col>
+                  </Row>
+                </Checkbox.Group>
+              )}
+            </Form.Item>
+
+            {/* 权限选择结束 */}
           </Form>
         </Modal>
+        <Table columns={columns} dataSource={this.props.data} />
       </div>
     );
   }
 }
 
 SUperMo = Form.create(null)(SUperMo);
-export default SUperMo;
+export default connect(
+  state => {
+    return {
+      employee: state.regist.employee,
+      data:state.regist.data
+    };
+  },
+  dispatch => {
+    return {
+      Regist(value) {
+        dispatch(userRegist(value));
+      },
+      getData(){
+        dispatch(userList());
+      }
+    };
+  }
+)(SUperMo);

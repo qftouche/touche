@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser')
 const userRouter = require('./user')
 const financyRouter = require('./financy')
 const oderRouter = require('./oder')
+const loginRouter = require('./login')
 
 // 新建app
 const app =express()
@@ -15,20 +16,22 @@ app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 // 跨域
 
-app.all('/test', function(req, res, next) {
+app.all('*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+  res.header("X-Powered-By",' 3.2.1');
+  res.header("Content-Type", "application/json;charset=utf-8");
   next();
-})
-
+  });
 // 路由
 app.use('/oders',oderRouter);
 app.use('/financy',financyRouter)
 app.use('/user',userRouter)
+app.use('/login',loginRouter)
 
 app.listen(9090,function(){
   console.log('Node app start at port 9090')

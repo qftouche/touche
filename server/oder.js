@@ -6,13 +6,14 @@ const oderRouter = model.getModel('oders')
 // 订单数据请求=====================完成
 Router.get('/list',function(req,res){
   let condition = req.query
+  console.log(condition)
   oderRouter.find(condition,function(err,doc){
     return res.json(doc)
   })
 })
 // 订单添加==============================完成
 Router.post('/add',function(req,res){
-  let params = req.body
+  let params = JSON.parse( Object.keys(req.body))
   oderRouter.create(params,function(err,doc){
     if(!err){
       let msg = {
@@ -31,10 +32,9 @@ Router.post('/add',function(req,res){
 })
 // 订单的修改
 Router.post('/updata',function(req,res){
-  let condition = {number:req.body.number}
-  let content = req.body.content
-  // let content = 
-  oderRouter.update(condition,{ '$set':content},function(err,doc){
+  let condition = JSON.parse( Object.keys(req.body))._id
+  let content = JSON.parse( Object.keys(req.body)).content
+  oderRouter.updateOne({_id:condition},{ '$set':content},function(err,doc){
     if(!err){
       let msg = {
         code:200,
