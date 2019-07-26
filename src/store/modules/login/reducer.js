@@ -1,16 +1,13 @@
 import * as contans from './contans'
 
 const initstate={
-  financy_data:[]
+  userinfo:''
 }
-
-
-
 
 export default (state = initstate,action)=>{
   switch(action.type){
-    case 'financy-data':
-      return Object.assign({},state,{financy_data:action.value})
+    case 'user-login':
+      return Object.assign({},state,{user:action.value})
   }
   return state
 }
