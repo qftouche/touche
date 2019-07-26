@@ -37,7 +37,10 @@ const actions = {
          data 
        ).then(res=>{
            if(res.data.code==200){
-              
+              dispatch({
+                type:'delectone',
+                 id
+              })
            }
        }) 
     }   

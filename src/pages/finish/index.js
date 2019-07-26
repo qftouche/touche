@@ -1,36 +1,45 @@
 import React from "react"
 import { Table } from 'antd';
 import "./finish.scss";
+import { connect } from "react-redux";
+import actions from "../../store/modules/execu/actions";
 const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-    },
-    {
-      title: 'Age',
-      dataIndex: 'age',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-    },
-  ];
-  const data = [];
-for (let i = 0; i < 10; i++) {
-  data.push({
-    key: i,
-    name: `张 ${i}`,
-    age: 32,
-    address: `每条数据 ${i}`,
-  });
-}
+  {
+    title: "姓名/商户名称",
+    dataIndex: "commercial"
+  },
+  {
+    title: "订单号",
+    dataIndex: "number"
+  },
+  {
+    title: "开始时间",
+    dataIndex: "startTime"
+  },
+  {
+    title: "结束时间",
+    dataIndex: "endTime"
+  },
+  {
+    title: "币种",
+    dataIndex: "currency"
+  },
+  {
+    title: "订单金额",
+    dataIndex: "money"
+  },
+  {
+    title: "订单描述",
+    dataIndex: "desc"
+  }
+];
+
 class Finish extends React.Component{
     state = {
-        selectedRowKeys: [], // Check here to configure the default column
+        selectedRowKeys: [], 
       };
     
       onSelectChange = selectedRowKeys => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
       };
     render(){
@@ -43,7 +52,7 @@ class Finish extends React.Component{
           selections: [
             {   
               key: 'all-data',
-              text: 'Select All Data',
+              text: '选择全部',
               onSelect: () => {
                 this.setState({
                   selectedRowKeys: [...Array(46).keys()], // 0...45
@@ -52,7 +61,7 @@ class Finish extends React.Component{
             },
             {
               key: 'odd',
-              text: 'Select Odd Row',
+              text: '选择奇数行',
               onSelect: changableRowKeys => {
                 let newSelectedRowKeys = [];
                 newSelectedRowKeys = changableRowKeys.filter((key, index) => {
@@ -66,7 +75,7 @@ class Finish extends React.Component{
             },
             {
               key: 'even',
-              text: 'Select Even Row',
+              text: '选择偶数行',
               onSelect: changableRowKeys => {
                 let newSelectedRowKeys = [];
                 newSelectedRowKeys = changableRowKeys.filter((key, index) => {
@@ -82,14 +91,28 @@ class Finish extends React.Component{
         };
         return (
           <div className="finish_page">
-              <h1>已经完成的订单</h1>
-              <div >
-
-              </div>
-             <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+              <h1>所有完成的订单</h1>
+             <Table rowSelection={rowSelection} columns={columns} dataSource={this.props.data} />
           </div>  
         )
     }
-}   
-export default Finish
+    componentDidMount(){  // 初始化数据
+      this.props.Overorderlist()
+    }
+} 
+
+export default connect(
+  state=>{
+    return {
+      data:state.neworder.Overorderlist
+    }
+  },
+  (dispatch)=>{
+    return{
+      Overorderlist:()=>{
+        dispatch( actions.Overorderlist() )
+      }
+    }
+  }
+)(Finish)
 

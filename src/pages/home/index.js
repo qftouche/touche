@@ -22,10 +22,10 @@ class Home extends React.Component {
             {imglist.map((item, index) => {
               return (
                 <div key={index}>
-                    <img src={item} alt="来呀快活呀" />
+                    <img src={item} alt="" />
                 </div>
               );  
-            })}
+            })} 
           </Carousel>
           <Icon
             type="left-circle"

@@ -157,7 +157,7 @@ class Audit extends React.Component {
           let id=this.state.id;
         // 发送ajax
         this.props.passorder(id,values)
-        message.success("审核通过");
+        message.success("审核通过 详情订单在正在执行页面 ");
         this.setState({
           visible: false
         });
