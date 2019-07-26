@@ -17,5 +17,6 @@ export default (state=initstate,action)=>{
         })
        return Object.assign({},state,{ orderlist : [ ...newlist ] })
     }
+ 
     return state
 }
