@@ -11,7 +11,7 @@ import {
   Icon,
   SelectCheckbox,
   Select,
-  Checkbox,
+  Radio,
   Row,
   Col
 } from "antd";
@@ -231,23 +231,13 @@ class SUperMo extends React.Component {
               {getFieldDecorator("jurisdiction", {
                 initialValue: "0"
               })(
-                <Checkbox.Group style={{ width: "100%" }}>
-                  <Row>
-                    <Col span={8}>
-                      <Checkbox value="0">boss</Checkbox>
-                    </Col>
-                    <Col span={8}>
-                      <Checkbox value="1">财务</Checkbox>
-                    </Col>
-                    <Col span={8}>
-                      <Checkbox value="2">人力</Checkbox>
-                    </Col>
-                    <Col span={8}>
-                      <Checkbox value="3">客服</Checkbox>
-                    </Col>
-                  </Row>
-                </Checkbox.Group>
-              )}
+                <Radio.Group name="radiogroup">
+                <Radio value={0}>经理</Radio>
+                <Radio value={1}>财务</Radio>
+                <Radio value={2}>人力</Radio>
+                <Radio value={3}>客服</Radio>
+              </Radio.Group>
+            )}
             </Form.Item>
 
             {/* 权限选择结束 */}
