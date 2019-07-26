@@ -13,8 +13,8 @@ import {
   Modal,
   DatePicker
 } from "antd";
-
 import { connect } from "react-redux";
+import actions from "../../store/modules/user/actions";
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -22,36 +22,36 @@ const RadioGroup = Radio.Group;
 class User extends React.Component {
   state = {
     list: [],
-    isVisible:false
+    isVisible: false,
+    selectedRowKeys: [], //被选中的当前的下标
+    selectedRows: [], //被选中的当前所在的值的集合
+    type: "" //当前是创建员工还是编辑
   };
-
-  params = {
-    page: 1
-  };
-
-  componentDidMount() {}
 
   // 操作员工
   handleOperator = type => {
-    let item = this.state.selectedItem;
+    let item = this.state.selectedRows.length;
+    console.log(item)
     if (type == "create") {
       this.setState({
         title: "创建员工",
         isVisible: true,
         type
       });
-    } else if (type == "edit" || type == "detail") {
-      if (!item) {
+    } else if (type == "edit") {
+      if (item === 0) {
         Modal.info({
           title: "信息",
           content: "请选择一个用户"
         });
         return;
+      } else if (item > 1) {
+        message.warning("只能选择一条信息进行编辑");
+        return;
       }
       this.setState({
         title: type == "edit" ? "编辑用户" : "查看详情",
         isVisible: true,
-        userInfo: item,
         type
       });
     } else if (type == "delete") {
@@ -66,14 +66,19 @@ class User extends React.Component {
   };
 
   render() {
+    let { selectedRowKeys } = this.state;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange
+    };
     const columns = [
       {
         title: "员工姓名",
-        dataIndex: "id"
+        dataIndex: "user_name"
       },
       {
         title: "编号",
-        dataIndex: "username"
+        dataIndex: "number"
       },
       {
         title: "性别",
@@ -83,35 +88,8 @@ class User extends React.Component {
         }
       },
       {
-        title: "员工描述",
-        dataIndex: "state",
-        render(state) {
-          let config = {
-            "1": "咸鱼一条",
-            "2": "风华浪子",
-            "3": "北大才子一枚",
-            "4": "百度FE",
-            "5": "创业者"
-          };
-          return config[state];
-        }
-      },
-      {
-        title: "爱好",
-        dataIndex: "interest",
-        render(interest) {
-          let config = {
-            "1": "游泳",
-            "2": "打篮球",
-            "3": "踢足球",
-            "4": "跑步",
-            "5": "爬山",
-            "6": "骑行",
-            "7": "桌球",
-            "8": "麦霸"
-          };
-          return config[interest];
-        }
+        title: "目前状态",
+        dataIndex: "state"
       },
       {
         title: "婚姻状况",
@@ -131,19 +109,6 @@ class User extends React.Component {
     ];
     return (
       <div>
-        <Card>
-          <Form layout="inline">
-            <FormItem>
-              <Input placeholder="请输入用户名" />
-            </FormItem>
-            <FormItem>
-              <Input type="password" placeholder="请输入密码" />
-            </FormItem>
-            <FormItem>
-              <Button type="primary">登 录</Button>
-            </FormItem>
-          </Form>
-        </Card>
         <Card style={{ marginTop: 10 }}>
           <Button
             type="primary"
@@ -168,17 +133,16 @@ class User extends React.Component {
         </Card>
         <div className="content-wrap">
           <Table
-            columns={columns}
-            // selectedRowKeys={this.state.selectedRowKeys}
-            dataSource={this.state.list}
-            // pagination={this.state.pagination}
+            columns={columns} // 表格配置
+            dataSource={this.props.userlist} //数据源
+            rowSelection={rowSelection} //表格的选择框
           />
         </div>
         <Modal
           title={this.state.title}
           visible={this.state.isVisible}
-          onOk={()=>{
-            this.handleSubmit()
+          onOk={() => {
+            this.handleSubmit(this.state.type);
           }}
           width={800}
           onCancel={() => {
@@ -189,49 +153,89 @@ class User extends React.Component {
           }}
         >
           <UserForm
-            userInfo={this.state.userInfo}
+            userInfo={this.state.selectedRows}
             type={this.state.type}
             wrappedComponentRef={inst => (this.userForm = inst)}
           />
         </Modal>
       </div>
-    )
+    );
   }
-  handleSubmit=()=>{
+  onSelectChange = (selectedRowKeys, selectedRows) => {
+    this.setState({ selectedRowKeys, selectedRows });
+  };
+
+  handleSubmit = type => {
+    // 弹框的处理事件回调
+    if (type === "create") {
+      // 创建员工
       this.userForm.props.form.validateFields((errors, values) => {
-         if(!errors){
-          console.log(values)
-         }
+        if (!errors) {
+          this.props.AddUser(values);
+          message.success("添加成功");
+          this.setState({
+            isVisible: false
+          });
+        }
+      });
+      return;
+    }
+    if (type === "edit") {
+      // 编辑员工
+      console.log("编辑员工走进来了");
+      this.userForm.props.form.validateFields((errors, values) => {
+        
+
       })
-      
+    }
+  };
+
+  componentDidMount() {
+    this.props.getUser();
   }
 }
 
-export default connect()(User)
-class UserForm extends React.Component {
-  componentDidMount(){
-   
+export default connect(
+  state => {
+    return {
+      userlist: state.user.userlist
+    };
+  },
+  dispatch => {
+    return {
+      AddUser: values => {
+        dispatch(actions.AddUser(values));
+      },
+      getUser: () => {
+        dispatch(actions.getUser());
+      }
+    };
   }
+)(User);
+class UserForm extends React.Component {
   render() {
+    let userInfo = this.props.userInfo[0];
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 5 },
       wrapperCol: { span: 16 }
     };
-
     return (
       <Form layout="horizontal">
         <FormItem label="姓名" {...formItemLayout}>
           {getFieldDecorator("user_name", {
-            rules: [{ required: true, message: "员工姓名为必填项" }]
+            rules: [{ required: true, message: "员工姓名为必填项" }],
+            initialValue: userInfo?userInfo.username:''
           })(<Input type="text" placeholder="请输入姓名" />)}
         </FormItem>
         <FormItem label="编号" {...formItemLayout}>
-          {getFieldDecorator("code")(<Input/>)}
+          {getFieldDecorator("code", {
+            initialValue: userInfo?userInfo.number:''
+          })(<Input />)}
         </FormItem>
         <FormItem label="性别" {...formItemLayout}>
           {getFieldDecorator("sex", {
-            initialValue: 1
+            initialValue: userInfo? userInfo.sex : 1
           })(
             <RadioGroup>
               <Radio value={1}>男</Radio>
@@ -241,7 +245,7 @@ class UserForm extends React.Component {
         </FormItem>
         <FormItem label="是否婚育" {...formItemLayout}>
           {getFieldDecorator("ismarried", {
-            initialValue: 1
+            initialValue: userInfo? userInfo.married : 1
           })(
             <RadioGroup>
               <Radio value={1}>未婚</Radio>
@@ -251,14 +255,13 @@ class UserForm extends React.Component {
         </FormItem>
         <FormItem label="员工描述" {...formItemLayout}>
           {getFieldDecorator("state", {
-            initialValue: 1
+            initialValue: userInfo ? userInfo.state :  1
           })(
             <Select>
-              <Option value={1}>帅气逼人</Option>
-              <Option value={2}>风华浪子</Option>
-              <Option value={3}>浪荡佳人</Option>
-              <Option value={4}>风华绝代</Option>
-              <Option value={5}>美貌如花</Option>
+              <Option value={1}>离职</Option>
+              <Option value={2}>在职</Option>
+              <Option value={3}>待业</Option>
+              <Option value={4}>随时到岗</Option>
             </Select>
           )}
         </FormItem>
@@ -267,12 +270,12 @@ class UserForm extends React.Component {
         </FormItem>
         <FormItem label="联系地址" {...formItemLayout}>
           {getFieldDecorator("address", {
-            rules: [{ required: true, message: "联系地址是必填项" }]
+            rules: [{ required: true, message: "联系地址是必填项" }],
+            initialValue: userInfo? userInfo.address :  ""
           })(<Input.TextArea rows={3} placeholder="请输入联系地址" />)}
         </FormItem>
       </Form>
     );
   }
- 
 }
 UserForm = Form.create({})(UserForm);
