@@ -27,6 +27,26 @@ Router.post('/add',function(req,res){
     }
   })
 })
+// 用户的删除
+Router.post('/del',function(req,res){
+  let condition = JSON.parse(Object.keys(req.body))
+  Employee.deleteOne(condition,function(err,doc){
+    if(!err){
+      let msg = {
+        code:200,
+        msg:'删除成功'
+      }
+      return res.json(msg)
+    }else{
+      let msg = {
+        code:-1,
+        msg:'删除失败'
+      }
+      return res.json(msg)
+    }
+  })
+})
+// 用户删除完成
 
 // 全部职员获取
 Router.get('/list',function(req,res){
