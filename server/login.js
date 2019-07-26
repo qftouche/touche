@@ -8,6 +8,7 @@ const Employee = model.getModel('employee')
 
 // 职员添加--用户注册
 Router.post('/add',function(req,res){
+  console.log(req.body,'========')
   let content = JSON.parse( Object.keys(req.body) )
   Employee.create(content,function(err,doc){
     if(!err){
@@ -47,7 +48,6 @@ Router.post('/login',function(req,res){
         msg:'登录成功',
         user:doc
       }
-      localStorage.setItem('doc')
       return res.json(msg)
     }else{
       let msg ={

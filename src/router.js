@@ -18,7 +18,7 @@ import User from "./pages/user/index";
 
 export default class ERouter extends React.Component{
   render(){
-    let user = (store.getState('userInfo'))
+    console.log(store.getState().login,'======')
     return (
     <HashRouter>
       <App>
@@ -27,26 +27,64 @@ export default class ERouter extends React.Component{
           <Route path='/login' component={Login}/>
           {/* 主页面路由 */}
           <Route path="/" render={()=>
-            {
-              if(user){
-                return (
-                <Admin>
-                  <Switch>
-                    <Route path="/home" component={Home} />
-                    <Route path="/form/reg" component={Reg} />
-                    <Route path='/finance' component={Finance}/>
-                    <Route path="/audit"   component={ Audit } />
-                    <Route path="/execute" component={EXecu} />
-                    <Route path='/finish' component={ Finish }/>
-                    <Route path="/finance" component={ Finance } />
-                    <Route path="/supermo" component={ SuperMo } /> 
-                    <Route path="/user" component={ User } />
-                  </Switch>
-                </Admin>)
-              }else{
-                return <Redirect to="/login"/>
+              { 
+                if(store.getState().login.user){
+                  if(store.getState().login.user.jurisdiction==0){
+                    return (//boss
+                      <Admin>
+                        <Switch>
+                          <Route path="/home" component={Home} />
+                          <Route path="/form/reg" component={Reg} />
+                          <Route path='/finance' component={Finance}/>
+                          <Route path="/audit"   component={ Audit } />
+                          <Route path="/execute" component={EXecu} />
+                          <Route path='/finish' component={ Finish }/>
+                          <Route path="/finance" component={ Finance } />
+                          <Route path="/supermo" component={ SuperMo } /> 
+                          <Route path="/user" component={ User } />
+                        </Switch>
+                      </Admin>)
+                  }else if(store.getState().login.user.jurisdiction==1){
+                    console.log('财务')
+                    return (//财务
+                      <Admin>
+                        <Switch>
+                          <Route path="/home" component={Home} />
+                          <Route path="/form/reg" component={Reg} />
+                          <Route path='/finance' component={Finance}/>
+                          <Route path="/audit"   component={ Audit } />
+                          <Route path="/execute" component={EXecu} />
+                          <Route path='/finish' component={ Finish }/>
+                          <Route path="/finance" component={ Finance } />
+                          <Route path="/user" component={ User } />
+                        </Switch>
+                      </Admin>)
+                    }else if(store.getState().login.user.jurisdiction==2){
+                      console.log('人力')
+                      return (//人力
+                        <Admin>
+                          <Switch>
+                            <Route path="/home" component={Home} />
+                            <Route path="/form/reg" component={Reg} />
+                            <Route path="/user" component={ User } />
+                          </Switch>
+                        </Admin>)
+                    }else{
+                      console.log('客服')
+                      return (//客服
+                        <Admin>
+                          <Switch>
+                            <Route path="/home" component={Home} />
+                            <Route path="/audit"   component={ Audit } />
+                            <Route path="/execute" component={EXecu} />
+                            <Route path='/finish' component={ Finish }/>
+                          </Switch>
+                        </Admin>)
+                    }
+                }else{
+                  return <Redirect to='/login'/>
+                }
               }
-            }
             } />
         </Switch>
       </App>
