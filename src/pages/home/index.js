@@ -1,12 +1,15 @@
 import React from "react";
 import "./index.scss";
-import home from "./../../resource/images/home/bg1.jpg";
+import che1 from "./../../resource/images/home/che1.jpg";
+import che2 from "./../../resource/images/home/che2.jpg";
+import che3 from "./../../resource/images/home/che3.jpg";
 
 import { Icon, Carousel } from "antd";
 const imglist = [];
-for (let i = 0; i < 3; i++) {
-  imglist.push(home);
-}
+imglist.push(che1);
+imglist.push(che2);
+imglist.push(che3);
+
 class Home extends React.Component {
     prev=()=>{
       this.refs.auto.prev();

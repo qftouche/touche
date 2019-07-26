@@ -14,10 +14,12 @@ import Finish from "./pages/finish/index";
 import SuperMo from "./pages/supremo/index";
 import Finance from './pages/finance';
 import User from "./pages/user/index";
+import {getUserInfor} from './store/modules/login/actionCreates'
 // 导出路由页面
 
 export default class ERouter extends React.Component{
   render(){
+    store.dispatch(getUserInfor())
     console.log(store.getState().login,'======')
     return (
     <HashRouter>
@@ -27,7 +29,7 @@ export default class ERouter extends React.Component{
           <Route path='/login' component={Login}/>
           {/* 主页面路由 */}
           <Route path="/" render={()=>
-              { 
+              {   
                 if(store.getState().login.user){
                   if(store.getState().login.user.jurisdiction==0){
                     return (//boss
@@ -42,6 +44,7 @@ export default class ERouter extends React.Component{
                           <Route path="/finance" component={ Finance } />
                           <Route path="/supermo" component={ SuperMo } /> 
                           <Route path="/user" component={ User } />
+                          <Redirect to="/home" />
                         </Switch>
                       </Admin>)
                   }else if(store.getState().login.user.jurisdiction==1){
@@ -57,6 +60,7 @@ export default class ERouter extends React.Component{
                           <Route path='/finish' component={ Finish }/>
                           <Route path="/finance" component={ Finance } />
                           <Route path="/user" component={ User } />
+                          <Redirect to="/home" />
                         </Switch>
                       </Admin>)
                     }else if(store.getState().login.user.jurisdiction==2){
@@ -67,6 +71,7 @@ export default class ERouter extends React.Component{
                             <Route path="/home" component={Home} />
                             <Route path="/form/reg" component={Reg} />
                             <Route path="/user" component={ User } />
+                            <Redirect to="/home" />
                           </Switch>
                         </Admin>)
                     }else{
@@ -78,6 +83,7 @@ export default class ERouter extends React.Component{
                             <Route path="/audit"   component={ Audit } />
                             <Route path="/execute" component={EXecu} />
                             <Route path='/finish' component={ Finish }/>
+                            <Redirect to="/home" />
                           </Switch>
                         </Admin>)
                     }
