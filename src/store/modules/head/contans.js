@@ -1,0 +1,1 @@
+export const GET_MUEN_NAME = 'get_muen_name'
