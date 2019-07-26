@@ -24,6 +24,7 @@ export const userLogin = (value,props)=>{
 export const getUserInfor = ()=>{
   return dispatch=>{
     let value = JSON.parse(localStorage.getItem('user'))
+    console.log(value)
     dispatch({
       type:contans.USER_LOGIN,
       value:value

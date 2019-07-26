@@ -149,6 +149,9 @@ class NavLeft extends React.Component {
             onClick={this.handleClick}
             selectedKeys={[this.state.current]}
           >
+           <Menu.Item key="1">
+              <Link to="/home">首页</Link>
+            </Menu.Item>
   
             <SubMenu
               key="sub1"
