@@ -1,5 +1,6 @@
 import * as contans from './contans';
 import ajax from './../../../ajax';
+import { resolve6 } from 'dns';
 
 
 // 注册问题，
@@ -40,5 +41,21 @@ export const userList= ()=>{
           res
         })
     })
+  }
+}
+
+
+// 删除一个员工
+export const delU = (id)=>{
+  let condition = {_id:id}
+  condition = JSON.stringify(condition)
+  console.log(condition)
+  return dispatch=>{
+    ajax(`http://10.36.140.222:9090/login/del`,condition,'POST')
+    .then( res=>{
+      if(res.code==200){
+        dispatch(userList())
+      }
+    } )
   }
 }

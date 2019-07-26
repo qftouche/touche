@@ -1,6 +1,6 @@
 import React from "react";
 import Highlighter from "react-highlight-words";
-import { userRegist,userList } from "./../../store/modules/regist/actionCreates";
+import { userRegist,userList,delU } from "./../../store/modules/regist/actionCreates";
 import store from "./../../store";
 import {
   Button,
@@ -18,15 +18,6 @@ import {
 import "./supermo.scss";
 import { connect } from "react-redux";
 
-// 列表参数
-// const data = [
-//   {
-//     key: '1',
-//     name: '冯家瑞',
-//     department: "总经理",
-//     number: '002',
-//   }
-// ];
 const { Option } = Select;
 
 class SUperMo extends React.Component {
@@ -48,7 +39,7 @@ class SUperMo extends React.Component {
     });
   };
   // 提交数据
-  handleOk = e => {
+  handleOk = (e,value) => {
     this.setState({
       visible: false
     });
@@ -57,7 +48,10 @@ class SUperMo extends React.Component {
         this.props.Regist(values);
       }
     });
+    
   };
+
+
   // 列表的内容====================================================
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({
@@ -86,14 +80,14 @@ class SUperMo extends React.Component {
           size="small"
           style={{ width: 90, marginRight: 8 }}
         >
-          Search
+          搜索
         </Button>
         <Button
           onClick={() => this.handleReset(clearFilters)}
           size="small"
           style={{ width: 90 }}
         >
-          Reset
+          重置
         </Button>
       </div>
     ),
@@ -130,10 +124,6 @@ class SUperMo extends React.Component {
     this.setState({ searchText: "" });
   };
 
-  // 列表内容结束
-  // department: 32,
-  // post: 'New York No. 1 Lake Park',
-  // 渲染内容
   render() {
     const columns = [
       {
@@ -155,6 +145,19 @@ class SUperMo extends React.Component {
         dataIndex: "number",
         key: "number",
         ...this.getColumnSearchProps("number")
+      },
+      {
+        title: "操作",
+        dataIndex: "",
+        key: "x",
+        render: (row) => (
+          <div>
+            <Button type="primary" onClick={()=>{
+              this.createrole(row)
+            }}>编辑</Button>
+            <Button type="danger" onClick={()=>{this.props.delUser(row.key)}}>删除</Button>
+          </div>
+        ),
       }
     ];
     // form
@@ -162,7 +165,7 @@ class SUperMo extends React.Component {
     return (
       <div className="supermo_page">
         <div className="role">
-          <Button onClick={this.createrole}>创建角色</Button>
+          <Button onClick={this.createrole}>添加员工</Button>
         </div>
         <Modal
           title="创建角色"
@@ -264,6 +267,9 @@ export default connect(
       },
       getData(){
         dispatch(userList());
+      },
+      delUser(value){
+        dispatch( delU(value) )
       }
     };
   }

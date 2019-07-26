@@ -5,11 +5,12 @@ import order  from "./modules/order/renders";
 import financy from './modules/financy/reducer';
 import regist from './modules/regist/reducer';
 import neworder from "./modules/execu/renders";
+import head from './modules/head/reducer'
 
 const composeEnxxx = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // 创建store实例
 const store = createStore(
-  combineReducers({login,financy,order,regist,neworder}),
+  combineReducers({login,financy,order,regist,neworder,head}),
   composeEnxxx(applyMiddleware(thunk))
 )
 // 4,将store实例暴露出去
