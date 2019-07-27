@@ -31,11 +31,10 @@ Router.post('/add',function(req,res){
 })
 // 用户资料的的修改
 Router.post('/updata',function(req,res){
-  let number = req.body.number
+  let number = JSON.parse( Object.keys(req.body))._id
   let content = JSON.parse( Object.keys(req.body)).content
-  // let content = 
-  User.update({number},{ '$set':content},function(err,doc){
-    if(!err){
+  User.updateOne({_id:number},{ '$set':content},function(err,doc){
+    if(doc.nModified>0){
       let msg = {
         code:200,
         msg:'修改成功'
@@ -54,7 +53,7 @@ Router.post('/updata',function(req,res){
 // 用户的删除
 Router.get('/del',function(req,res){
   let condition = req.query
-  oderRouter.remove(condition,function(err,doc){
+  User.deleteOne(condition,function(err,doc){
     if(!err){
       let msg = {
         code:200,

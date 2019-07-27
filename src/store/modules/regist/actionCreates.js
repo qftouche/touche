@@ -32,7 +32,6 @@ export const userList= ()=>{
           item['name']=item['username']
           item['department']=item['post']
           item['number']=item['_id']
-          delete item['_id']
           delete item['username']
           delete item['post']
         });

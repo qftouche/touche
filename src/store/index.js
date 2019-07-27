@@ -6,6 +6,7 @@ import financy from './modules/financy/reducer';
 import regist from './modules/regist/reducer';
 import neworder from "./modules/execu/renders";
 import user from "./modules/user/reducer";
+import head from './modules/head/reducer'
 
 const composeEnxxx = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // 创建store实例

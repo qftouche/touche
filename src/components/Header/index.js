@@ -32,7 +32,7 @@ class Header extends React.Component{
                 <Row className="header-top">
                     <Col span={menuType?18:24} className="logo1">
                         <img src={this.state.avator} alt=""/>
-                        <span>欢迎，{this.state.userName}</span>
+                        <span>欢迎，{this.props.userInfo.username}</span>
                         <a href="#" onClick={this.userOut}>退出</a>
                     </Col>
                 </Row>
@@ -60,8 +60,10 @@ class Header extends React.Component{
     }
 }
 const mapStateToProps = state => {
+    console.log(state.login.user,"===========00000")
     return {
         menuName: state.head.menu,
+        userInfo:state.login.user
     }
 };
 const mapDispacthToProps = dispatch=>{
