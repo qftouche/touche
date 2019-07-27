@@ -47,11 +47,11 @@ class EXecu extends React.Component {
   start = type => {
     if (type === "danger") {
       if (this.state.id.length > 1) {
-        message.warning("结束订单只能一个一个的删");
+        message.warning("结束订单一次最多选择一个");
         return;
       }
       this.props.Delectorder(this.state.id[0]); // props接收一个函数 并且执行
-      message.success("订单已经结束,将不会存在于平台上！");
+      message.success("订单完成，已经帮您结束，可在执行完毕查看！");
     } else if (type === "primary") {
       setTimeout(() => {
         this.info();

@@ -11,7 +11,8 @@ import {
   Icon,
   message,
   Modal,
-  DatePicker
+  DatePicker,
+  Popconfirm
 } from "antd";
 import { connect } from "react-redux";
 import actions from "../../store/modules/user/actions";
@@ -25,19 +26,20 @@ class User extends React.Component {
     isVisible: false,
     selectedRowKeys: [], //被选中的当前的下标
     selectedRows: [], //被选中的当前所在的值的集合
-    type: "" //当前是创建员工还是编辑
+    type: "", //当前是创建员工还是编辑
+    isVisibledetail:false // 详情
   };
 
   // 操作员工
   handleOperator = type => {
     let item = this.state.selectedRows.length;
-    console.log(item)
     if (type == "create") {
       this.setState({
         title: "创建员工",
         isVisible: true,
         type
       });
+      return ;
     } else if (type == "edit") {
       if (item === 0) {
         Modal.info({
@@ -50,20 +52,33 @@ class User extends React.Component {
         return;
       }
       this.setState({
-        title: type == "edit" ? "编辑用户" : "查看详情",
+        title: '编辑用户',
         isVisible: true,
         type
       });
+      return;
     } else if (type == "delete") {
-      if (!item) {
+      if (item === 0) {
         Modal.info({
           title: "信息",
           content: "请选择一个用户"
         });
         return;
+      } else if (item > 1) {
+        message.warning("请选择一位用户");
+        return;
       }
+     let id = this.state.selectedRows[0]._id;
+     this.props.DeleteONE(id)
+    } else if ( type === 'detail' ){
+      // 显示详情
+      this.setState({
+        isVisibledetail: true
+      })
     }
+
   };
+
 
   render() {
     let { selectedRowKeys } = this.state;
@@ -74,7 +89,7 @@ class User extends React.Component {
     const columns = [
       {
         title: "员工姓名",
-        dataIndex: "user_name"
+        dataIndex: "username"
       },
       {
         title: "编号",
@@ -89,7 +104,16 @@ class User extends React.Component {
       },
       {
         title: "目前状态",
-        dataIndex: "state"
+        dataIndex: "desc",
+        render : (state)=>{
+          const  stateNow={
+            1 : '离职',
+            2 : '在职',
+            3 : '待业',
+            4 : '随时到岗'
+          }
+          return stateNow[state]
+        }
       },
       {
         title: "婚姻状况",
@@ -123,13 +147,19 @@ class User extends React.Component {
           <Button onClick={() => this.handleOperator("detail")}>
             员工详情
           </Button>
-          <Button
-            type="danger"
-            icon="delete"
-            onClick={() => this.handleOperator("delete")}
+          <Popconfirm
+            title="你确定要删除这条数据吗"
+            okText="是的"
+            cancelText="再想想"
+            onConfirm={() => this.handleOperator("delete")}
           >
-            删除员工
-          </Button>
+            <Button
+              type="danger"
+              icon="delete"
+            >
+              删除员工
+            </Button>
+          </Popconfirm>
         </Card>
         <div className="content-wrap">
           <Table
@@ -158,6 +188,19 @@ class User extends React.Component {
             wrappedComponentRef={inst => (this.userForm = inst)}
           />
         </Modal>
+        {/* 显示页面详细信息 */}
+        <Modal
+          title="员工详情信息"
+          width="100%"
+          visible={this.state.isVisibledetail}
+          onOk={()=>{this.setState({ isVisibledetail : false  })}}
+          onCancel={()=>{this.setState({ isVisibledetail : false  })}}
+        >
+         <Table
+            columns={columns} // 表格配置
+            dataSource={this.state.selectedRows} //数据源
+          />
+      </Modal>
       </div>
     );
   }
@@ -166,7 +209,6 @@ class User extends React.Component {
   };
 
   handleSubmit = type => {
-    // 弹框的处理事件回调
     if (type === "create") {
       // 创建员工
       this.userForm.props.form.validateFields((errors, values) => {
@@ -182,18 +224,23 @@ class User extends React.Component {
     }
     if (type === "edit") {
       // 编辑员工
-      console.log("编辑员工走进来了");
       this.userForm.props.form.validateFields((errors, values) => {
-        
-
-      })
+        if (!errors) {
+          let id = this.state.selectedRows[0]._id;
+          this.props.UpdataOne(values, id);
+          this.setState({
+            isVisible: false
+          });
+          return;
+        }
+      });
     }
   };
 
   componentDidMount() {
     this.props.getUser();
   }
-}
+} 
 
 export default connect(
   state => {
@@ -208,6 +255,12 @@ export default connect(
       },
       getUser: () => {
         dispatch(actions.getUser());
+      },
+      UpdataOne: (values, id) => {
+        dispatch(actions.UpdataOne(values, id));
+      },
+      DeleteONE:(id)=>{
+        dispatch(actions.DeleteONE(id))
       }
     };
   }
@@ -223,19 +276,19 @@ class UserForm extends React.Component {
     return (
       <Form layout="horizontal">
         <FormItem label="姓名" {...formItemLayout}>
-          {getFieldDecorator("user_name", {
+          {getFieldDecorator("username", {
             rules: [{ required: true, message: "员工姓名为必填项" }],
-            initialValue: userInfo?userInfo.username:''
+            initialValue: userInfo ? userInfo.username : ""
           })(<Input type="text" placeholder="请输入姓名" />)}
         </FormItem>
         <FormItem label="编号" {...formItemLayout}>
-          {getFieldDecorator("code", {
-            initialValue: userInfo?userInfo.number:''
+          {getFieldDecorator("number", {
+            initialValue: userInfo ? userInfo.number : ""
           })(<Input />)}
         </FormItem>
         <FormItem label="性别" {...formItemLayout}>
           {getFieldDecorator("sex", {
-            initialValue: userInfo? userInfo.sex : 1
+            initialValue: userInfo ? userInfo.sex : 1
           })(
             <RadioGroup>
               <Radio value={1}>男</Radio>
@@ -245,7 +298,7 @@ class UserForm extends React.Component {
         </FormItem>
         <FormItem label="是否婚育" {...formItemLayout}>
           {getFieldDecorator("ismarried", {
-            initialValue: userInfo? userInfo.married : 1
+            initialValue: userInfo ? userInfo.married : 1
           })(
             <RadioGroup>
               <Radio value={1}>未婚</Radio>
@@ -254,8 +307,8 @@ class UserForm extends React.Component {
           )}
         </FormItem>
         <FormItem label="员工描述" {...formItemLayout}>
-          {getFieldDecorator("state", {
-            initialValue: userInfo ? userInfo.state :  1
+          {getFieldDecorator("desc", {
+            initialValue: userInfo ? userInfo.state : 1
           })(
             <Select>
               <Option value={1}>离职</Option>
@@ -271,7 +324,7 @@ class UserForm extends React.Component {
         <FormItem label="联系地址" {...formItemLayout}>
           {getFieldDecorator("address", {
             rules: [{ required: true, message: "联系地址是必填项" }],
-            initialValue: userInfo? userInfo.address :  ""
+            initialValue: userInfo ? userInfo.address : ""
           })(<Input.TextArea rows={3} placeholder="请输入联系地址" />)}
         </FormItem>
       </Form>
