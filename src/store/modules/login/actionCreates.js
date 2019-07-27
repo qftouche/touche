@@ -1,6 +1,6 @@
 import * as contans from './contans';
 import ajax from './../../../ajax';
-
+import  { message } from "antd"
 
 // 登录问题，
 export const userLogin = (value,props)=>{
@@ -8,13 +8,17 @@ export const userLogin = (value,props)=>{
     value = JSON.stringify(value)
     ajax('http://10.36.140.222:9090/login/login',value,'POST').then( res=>{
       if(res.code==200){
+        message.success("登陆成功")
         dispatch({
           type:contans.USER_LOGIN,
           value:res.user
         })
         localStorage.setItem('user',JSON.stringify(res.user))
         props.history.replace('/')
+      } else {
+        message.warn("登陆失败 用户名或者密码错误")
       }
+
     })
     
   }
